@@ -12,5 +12,5 @@
 #define TESUJIPP_STR(X)      TESUJIPP_STR_IMPL(X)
 
 #ifndef STRINGIFY
-#  define STRINGIFY(X) TESUJIPP_STR(X)
+#    define STRINGIFY(X) TESUJIPP_STR(X)
 #endif

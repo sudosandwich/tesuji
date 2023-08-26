@@ -1,5 +1,5 @@
 ﻿---
-AccessModifierOffset: "-2"
+AccessModifierOffset: "-4"
 AlignAfterOpenBracket: Align
 AlignConsecutiveMacros: "true"
 AlignConsecutiveAssignments: "true"
@@ -36,13 +36,13 @@ BreakStringLiterals: "true"
 ColumnLimit: "100"
 CompactNamespaces: "true"
 ConstructorInitializerAllOnOneLineOrOnePerLine: "false"
-ContinuationIndentWidth: "2"
+ContinuationIndentWidth: "4"
 Cpp11BracedListStyle: "true"
 FixNamespaceComments: "true"
 IncludeBlocks: Preserve
 IndentCaseLabels: "false"
 IndentPPDirectives: AfterHash
-IndentWidth: "2"
+IndentWidth: "4"
 IndentWrappedFunctionNames: "false"
 KeepEmptyLinesAtTheStartOfBlocks: "false"
 Language: Cpp
@@ -66,5 +66,5 @@ SpacesInContainerLiterals: "false"
 SpacesInParentheses: "false"
 SpacesInSquareBrackets: "false"
 Standard: Cpp11
-TabWidth: "2"
+TabWidth: "4"
 UseTab: Never

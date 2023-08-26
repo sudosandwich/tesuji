@@ -39,57 +39,57 @@ namespace tesuji {
 
 namespace detail {
 inline std::string declutter(std::string name) {
-  using namespace std;
+    using namespace std;
 
-  // remove msvc annotations
-  name = regex_replace(name, regex("\\(void\\)"), "()");
+    // remove msvc annotations
+    name = regex_replace(name, regex("\\(void\\)"), "()");
 
-  name = regex_replace(name, regex("\\b(__cdecl|__stdcall|__fastcall)\\s+"), "");
+    name = regex_replace(name, regex("\\b(__cdecl|__stdcall|__fastcall)\\s+"), "");
 
-  name = regex_replace(name, regex("\\b(struct|class)\\s+"), "");
+    name = regex_replace(name, regex("\\b(struct|class)\\s+"), "");
 
-  // remove extra spaces
-  name = regex_replace(name, regex("\\s*> >\\s*"), ">>");
-  name = regex_replace(name, regex("<\\s+"), "<");
-  name = regex_replace(name, regex("(,|::)\\s+"), "$1");
+    // remove extra spaces
+    name = regex_replace(name, regex("\\s*> >\\s*"), ">>");
+    name = regex_replace(name, regex("<\\s+"), "<");
+    name = regex_replace(name, regex("(,|::)\\s+"), "$1");
 
-  // types e.g. "unsigned __int64" -> "uint64_t"
-  name = regex_replace(name, regex("unsigned __([a-z]+)(\\d+)"), "u$1$2_t");
-  name = regex_replace(name, regex("(?:signed )?__([a-z]+)(\\d+)"), "$1$2_t");
+    // types e.g. "unsigned __int64" -> "uint64_t"
+    name = regex_replace(name, regex("unsigned __([a-z]+)(\\d+)"), "u$1$2_t");
+    name = regex_replace(name, regex("(?:signed )?__([a-z]+)(\\d+)"), "$1$2_t");
 
-  // strings
-  name = regex_replace(name,
-                       regex("std::basic_string<char,std::char_traits<char>,"
-                             "std::allocator<char>>"),
-                       "std::string");
+    // strings
+    name = regex_replace(name,
+                         regex("std::basic_string<char,std::char_traits<char>,"
+                               "std::allocator<char>>"),
+                         "std::string");
 
-  name = regex_replace(name,
-                       regex("std::basic_string<wchar_t,std::char_traits<wchar_"
-                             "t>,std::allocator<wchar_t>>"),
-                       "std::wstring");
+    name = regex_replace(name,
+                         regex("std::basic_string<wchar_t,std::char_traits<wchar_"
+                               "t>,std::allocator<wchar_t>>"),
+                         "std::wstring");
 
-  // containers
-  name = regex_replace(name,
-                       regex("std::(vector|deque|forward_list|list|set|multiset|"
-                             "unordered_set|unordered_multiset)<([^,]+),.*"),
-                       "std::$1<$2>");
+    // containers
+    name = regex_replace(name,
+                         regex("std::(vector|deque|forward_list|list|set|multiset|"
+                               "unordered_set|unordered_multiset)<([^,]+),.*"),
+                         "std::$1<$2>");
 
-  name = regex_replace(name,
-                       regex("std::(map|multimap|unordered_map|unordered_"
-                             "multimap|pair)<([^,]+),([^,]+),.*"),
-                       "std::$1<$2,$3>");
+    name = regex_replace(name,
+                         regex("std::(map|multimap|unordered_map|unordered_"
+                               "multimap|pair)<([^,]+),([^,]+),.*"),
+                         "std::$1<$2,$3>");
 
-  return name;
+    return name;
 }
 
 } // namespace detail
 } // namespace tesuji
 
 #ifndef __PRETTY_FUNCTION__
-#  define __PRETTY_FUNCTION__ __FUNCSIG__
+#    define __PRETTY_FUNCTION__ __FUNCSIG__
 #endif
 
 #define BARK                                                                                       \
-  std::cout << tesuji::detail::declutter(__PRETTY_FUNCTION__) << "@" << __LINE__ << "\n"           \
-            << std::flush
+    std::cout << tesuji::detail::declutter(__PRETTY_FUNCTION__) << "@" << __LINE__ << "\n"         \
+              << std::flush
 #define ETYPE(E) tesuji::detail::declutter(typeid(decltype(E)).name())
