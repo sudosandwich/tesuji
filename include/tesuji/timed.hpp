@@ -147,7 +147,7 @@ struct call_info
 
 
 std::ostream &operator<<(std::ostream &os, const call_info &info) {
-    return os << std::format("{}: total: {} avg: {}, min: {}, max: {}", info.name,
+    return os << std::format("{}: total: {: >5} avg: {: >5}, min: {: >5}, max: {: >5}", info.name,
                              durationToHumanString(info.total), durationToHumanString(info.avg),
                              durationToHumanString(info.min), durationToHumanString(info.max));
 }
