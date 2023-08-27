@@ -6,7 +6,7 @@
 // github.com/sudosandwich/tesuji
 
 #if defined(__has_include) && __has_include("version.hpp")
-#include "version.hpp"
+#    include "version.hpp"
 #endif
 
 #include <chrono>
@@ -72,36 +72,42 @@ namespace tesuji { namespace timed {
 //
 
 
+using namespace std::chrono_literals;
+
 using std::chrono::duration_cast;
 using std::chrono::high_resolution_clock;
+
+using std::chrono::microseconds;
 using std::chrono::milliseconds;
+using std::chrono::nanoseconds;
 using std::chrono::seconds;
 
 
 std::string durationToHumanString(auto duration) {
-    auto millis = duration_cast<milliseconds>(duration);
-
-    if(duration < 1ms) {
+    if(duration < 1us) {
         return std::format("{}", duration);
+    } else if(duration < 1ms) {
+        return std::format("{}", duration_cast<microseconds>(duration));
     } else if(duration < 1s) {
-        return std::format("{}", millis);
+        return std::format("{}", duration_cast<milliseconds>(duration));
     } else if(duration < 1min) {
-        auto secPart   = duration_cast<seconds>(duration);
-        auto milliPart = duration_cast<milliseconds>(duration - secPart);
         // Unfortunately chrono's format doesn't support precision, and it will always add a padding
         // 0, so we have to do this manually. The milliseconds happen to be the 4 digits after the
         // comma in seconds. `{:0>4}` pads the milliseconds with zeros to the left, and we get the
         // rational part of duration.
+        auto secPart   = duration_cast<seconds>(duration);
+        auto milliPart = duration_cast<milliseconds>(duration - secPart);
         return std::format("{}.{:0>4}s", secPart.count(), milliPart.count());
     } else {
-        return std::format("{0:%T}", millis);
+        return std::format("{:%T}", duration_cast<milliseconds>(duration));
     }
 };
 
 
-struct block
+template<size_t IndentFactor = 4> struct block
 {
-    static inline size_t indent = 0;
+    static inline size_t          indent        = 0;
+    static constexpr const size_t indent_factor = IndentFactor;
 
     std::string                       name;
     high_resolution_clock::time_point start;
@@ -115,7 +121,7 @@ struct block
     ~block() {
         auto end      = high_resolution_clock::now();
         auto duration = duration_cast<milliseconds>(end - start);
-        std::cout << std::format("{}{}: {}\n", std::string(--indent * 4, ' '), name,
+        std::cout << std::format("{}{}: {}\n", std::string(--indent * indent_factor, ' '), name,
                                  durationToHumanString(duration));
     }
 };
@@ -157,16 +163,17 @@ call_info calls(std::string_view name, size_t count, auto &&func) {
     // "warmup" to get some initial values
     {
         auto start = high_resolution_clock::now();
-        func();
+        (void)func();
         info.total = high_resolution_clock::now() - start;
         info.min   = info.total;
-        info.min   = info.total;
+        info.max   = info.total;
     }
 
+    // start at 1 because we already did one call
     for(size_t i = 1; i < count; ++i) {
         auto start = high_resolution_clock::now();
-        func();
-        const auto duration = high_resolution_clock::now() - start;
+        (void)func();
+        auto duration = high_resolution_clock::now() - start;
         info.total += duration;
         info.min = std::min(info.min, duration);
         info.max = std::max(info.max, duration);
@@ -177,4 +184,5 @@ call_info calls(std::string_view name, size_t count, auto &&func) {
     return info;
 }
 
-}; } // namespace tesuji::timed
+
+}} // namespace tesuji::timed
