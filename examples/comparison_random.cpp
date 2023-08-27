@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 
     random_device rd;
 
-    cout << timed::calls("random_device", iterations, rd) << endl;
+    cout << timed::calls("random_device        ", iterations, rd) << endl;
 
     auto mersenne = mt19937_64{rd()};
     cout << timed::calls("mt19937_64           ", iterations, mersenne) << endl;
