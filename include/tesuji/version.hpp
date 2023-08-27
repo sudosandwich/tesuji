@@ -12,5 +12,5 @@
 #define TESUJI_VERSION_MINOR 4
 #define TESUJI_VERSION_PATCH 0
 
-#define TESUJI_VERSION_STR                                                                         \
+#define TESUJI_VERSION_STRING                                                                      \
     TESUJIPP_STR(TESUJI_VERSION_MAJOR.TESUJI_VERSION_MINOR.TESUJI_VERSION_PATCH)

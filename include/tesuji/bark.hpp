@@ -5,7 +5,9 @@
 // See https://creativecommons.org/licenses/by/4.0/legalcode for the full license text.
 // github.com/sudosandwich/tesuji
 
+#if defined(__has_include) && __has_include("version.hpp")
 #include "version.hpp"
+#endif
 
 #include <iostream>
 #include <regex>
