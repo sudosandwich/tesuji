@@ -77,10 +77,10 @@ using namespace std::chrono_literals;
 using std::chrono::duration_cast;
 using std::chrono::high_resolution_clock;
 
-using std::chrono::microseconds;
-using std::chrono::milliseconds;
-using std::chrono::nanoseconds;
 using std::chrono::seconds;
+using std::chrono::milliseconds;
+using std::chrono::microseconds;
+using std::chrono::nanoseconds;
 
 
 std::string durationToHumanString(auto duration) {
@@ -127,9 +127,9 @@ template<size_t IndentFactor = 4> struct block
 };
 
 
-auto call(std::string_view name, auto &&func) {
+auto call(std::string_view name, auto &&func, auto&&... args) {
     block b(name);
-    return func();
+    return func(std::forward<decltype(args)>(args)...);
 }
 
 
